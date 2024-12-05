@@ -92,3 +92,49 @@ void print_welcome_message() {
 void print_welcome_message();
 ```
 function.h
+
+
+## Question 2 :
+
+A)
+une chaîne dynamique welcome est utilisée pour personnaliser le message affiché en fonction de l'entrée (input). on était forcé a utiliser la fonction sprintf  pour formater le message en insérant la valeur de input, qui correspond à ce que l'utilisateur a saisi. Le message formaté, tel que "vous avez écrit,input\n", est ensuite affiché à l'aide de print_write, une fonction utilitaire qui simplifie l'appel au bas niveau de write qu'on a crée dans shell.c
+```c title="function.c"
+
+char * welcome;
+    sprintf(welcome,"vous avez écrit %s/n",input);
+    print_write(welcome);
+```
+Dans function.c
+
+B) La fonction execute_command est conçue pour exécuter une commande en créant un nouveau processus. Elle utilise fork pour dupliquer le processus actuel. Dans le processus enfant, execlp est utilisé pour exécuter la commande spécifiée. Si execlp échoue, un message d'erreur est affiché et le processus enfant se termine. Le processus parent utilise waitpid pour attendre la fin du processus enfant et vérifie si celui-ci s'est terminé normalement. Finalement, la fonction retourne le code de retour du processus enfant pour indiquer si la commande a réussi ou échoué, où un code de retour de 0 indique un succès et un code non nul indique un échec.On l'a bien sur ajouté dans le function.h
+
+```c title="function.c"
+
+int execute_command(char *command) {
+    pid_t pid = fork();
+    // Processus enfant
+    if (pid <= 0) {
+        if (pid < 0) {
+            perror("Erreur lors du fork");
+        } 
+        else {
+            execlp(command, command, NULL);
+            perror("Erreur lors de l'exécution de la commande");
+        }
+        exit(EXIT_FAILURE);
+    } 
+    // Processus parent
+    else {
+        int status;
+        waitpid(pid, &status, 0);
+        if (!WIFEXITED(status)) {
+            print_shell("La commande a échoué.\n");
+        }
+        return WEXITSTATUS(status); // Retourne 0 si succès, sinon le code d'erreur
+    }
+}
+
+```
+Dans function.c
+
+
