@@ -137,4 +137,40 @@ int execute_command(char *command) {
 ```
 Dans function.c
 
+C)D'aprés le sujet on peut utiliser une functioon REPL pour afficher le prompt_message, lire l'input de l'utilisateur, executer la commande et recommencer.Dans cette fonction REPL,on a  mis en place une boucle infinie pour gérer l’interaction continue entre le shell et l’utilisateur. À chaque itération, le prompt est affiché à l’aide de la fonction print_write, puis j’utilise read_shell pour lire la commande saisie par l’utilisateur et la stocker dans le tableau input. Ensuite, la commande est exécutée avec execute_command, qui retourne un code de sortie pour indiquer si l’exécution a réussi ou échoué. Si la commande échoue (retourne EXIT_FAILURE), un message d’erreur est affiché pour demander à l’utilisateur de réessayer. On la met dans le enseash.c et on modifie le main parce que la fonction print_welcome_message ne sert plus à grand chose.
+
+```c title="enseash.c"
+
+#define MAX_INPUT_SIZE 1024
+char exit_command[] = "exit";
+char prompt_message[] = "enseash % ";
+
+
+int REPL(){
+    while(1){
+        char input[MAX_INPUT_SIZE];
+        
+        print_write(prompt_message);
+        read_shell(input);
+
+        int exit_code_cmd = execute_command(input);
+        if(exit_code_cmd == EXIT_FAILURE){
+            print_shell("La commande a échoué, réessayez\n");
+        }
+        
+    }
+}
+
+int main(){
+    char *welcome_msg = "Bienvenue dans le Shell ENSEA.\nPour quitter, tapez 'exit'.\n";
+    char tkt;
+    sprintf(tkt,welcome_msg,exit_command);  
+    print_write(tkt);   
+    return REPL();
+}
+
+```
+Dans enseash.c
+
+
 
