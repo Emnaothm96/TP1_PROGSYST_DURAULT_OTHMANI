@@ -173,4 +173,22 @@ int main(){
 Dans enseash.c
 
 
+## Question 3 :
+
+EXIT)Cette section de code vérifie si l'utilisateur a entré la commande "exit". Si c'est le cas, elle affiche un message de sortie et retourne EXIT_SUCCESS pour indiquer une terminaison réussie du shell. Cette action met fin à la boucle while(1) de la fonction REPL, ce qui entraîne la fermeture du shell.
+
+```c title="enseash.c"
+
+ print_write(prompt_message);
+ read_shell(input);
+
+ if(strncmp(input,exit_command,strlen(input)) == 0 ){
+         print_shell(exit_message);
+        return EXIT_SUCCESS;
+            }
+            
+int exit_code_cmd = execute_command(input);
+
+```
+ enseash.c
 

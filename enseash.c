@@ -8,6 +8,7 @@
 #define MAX_INPUT_SIZE 1024
 char exit_command[] = "exit";
 char prompt_message[] = "enseash % ";
+char exit_message[]="bye bye\n";
 
 
 int REPL(){
@@ -17,6 +18,11 @@ int REPL(){
         print_write(prompt_message);
         read_shell(input);
 
+         if(strncmp(input,exit_command,strlen(input)) == 0 ){
+            print_shell(exit_message);
+            return EXIT_SUCCESS;
+            }
+            
         int exit_code_cmd = execute_command(input);
         if(exit_code_cmd == EXIT_FAILURE){
             print_write("La commande a échoué, réessayez\n");
